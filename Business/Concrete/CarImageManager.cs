@@ -34,8 +34,8 @@ namespace Business.Concrete
             {
                 return result;
             }
-
-            carImage.Path = FileHelper.Add(formFile);
+                        
+            carImage.Path = (FileHelper.Add(formFile)).Remove(0, 59);
             carImage.Date = DateTime.Now;
 
             _carImageDal.Add(carImage);
@@ -45,7 +45,7 @@ namespace Business.Concrete
 
         private IResult CheckIfCarImageLimitExceded(int carId)
         {
-            if (_carImageDal.GetAll(c => c.CarId == carId).Count >= 10)
+            if (_carImageDal.GetAll(c => c.CarId == carId).Count >= 7)
             {
                 return new ErrorResult(ErrorMessage.CarImageLimitExceeded);
             }
@@ -72,20 +72,8 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
         {
-            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageCorrect(carId));
-        }
-
-        private List<CarImage> CheckIfCarImageCorrect(int carId)
-        {
-            string defaultPath = @"\Images\noPicture.png";
-            var result = _carImageDal.GetAll(c => c.CarId == carId).Any();
-
-            if (!result)
-            {
-                return new List<CarImage> { new CarImage { CarId = carId, Path = defaultPath, Date = DateTime.Now } };
-            }
-            return _carImageDal.GetAll(n => n.CarId == carId);
-        }
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
+        }                
 
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile formFile, CarImage carImage)

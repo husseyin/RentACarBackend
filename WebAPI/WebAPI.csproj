@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Images\noPicture.png" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 

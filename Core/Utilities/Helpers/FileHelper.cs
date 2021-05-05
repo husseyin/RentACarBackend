@@ -54,7 +54,11 @@ namespace Core.Utilities.Helpers
 
         private static string newPath(IFormFile formFile)
         {
-            var newPath = $@"\wwwroot\Images\{Guid.NewGuid()}_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}{new FileInfo(formFile.FileName).Extension}";
+            FileInfo fileInfo = new FileInfo(formFile.FileName);
+            string fileExtension = fileInfo.Extension;
+
+            var newPath = Environment.CurrentDirectory + $@"\Images\{Guid.NewGuid()}_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}{fileExtension}";
+            
             return newPath;
         }
     }
