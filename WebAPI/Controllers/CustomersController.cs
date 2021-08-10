@@ -42,6 +42,17 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getcustomerdetailbycustomerid")]
+        public IActionResult GetCustomerDetailByCustomerId(int customerId)
+        {
+            var result = _customerService.GetCustomerDetailByCustomerId(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("add")]
         public IActionResult Add(Customer customer)
         {

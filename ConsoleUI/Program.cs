@@ -10,8 +10,20 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //RentalTest();
 
+            var customerTest = new CustomerManager(new EfCustomerDal());
+            foreach (var customer in customerTest.GetCustomerDetails().Data)
+            {
+                Console.WriteLine(customer.CompanyName);
+            }
+
+            //var carTest = new CarManager(new EfCarDal());
+            //foreach (var car in carTest.GetCarDetails().Data)
+            //{
+            //    Console.WriteLine(car.CarName);
+            //}
+
+            //RentalTest();
             //CoreClassTest();
             //CarManagerTest();
             //BrandManagerTest();

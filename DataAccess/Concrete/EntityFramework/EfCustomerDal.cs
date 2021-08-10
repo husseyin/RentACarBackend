@@ -6,13 +6,14 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCustomerDal : EfEntityRepositoryBase<Customer, RentCarContext>, ICustomerDal
     {
-        public List<CustomerDetailDto> GetCustomerDetails()
+        public List<CustomerDetailDto> GetCustomerDetails(Expression<Func<CustomerDetailDto , bool>> filter = null)
         {
             using (RentCarContext context = new RentCarContext())
             {
@@ -22,13 +23,13 @@ namespace DataAccess.Concrete.EntityFramework
                              select new CustomerDetailDto
                              {
                                  CustomerId = c.Id,
+                                 UserId = u.Id,
                                  UserName = u.FirstName + " " + u.LastName,
                                  Email = u.Email,
                                  CompanyName = c.CompanyName
-                             };
-                return result.ToList();
-            }
-            
+                             };                
+                return filter == null ? result.ToList() : result.Where(filter).ToList();
+            }            
         }
     }
 }
